@@ -27,6 +27,8 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: false
+      - name: Fetch public-domain Kitab al-Tawhid transcription
+        run: python3 scripts/fetch_wikisource.py
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
