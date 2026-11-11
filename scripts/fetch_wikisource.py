@@ -46,7 +46,7 @@ class BookText(HTMLParser):
         if tag == "div":
             self.div_depth += 1
         if tag in self.BLOCKS:
-            self.parts.append("\\n")
+            self.parts.append("\n")
 
     def handle_endtag(self, tag):
         if self.skip_tags:
@@ -57,7 +57,7 @@ class BookText(HTMLParser):
         if not self.active:
             return
         if tag in self.BLOCKS:
-            self.parts.append("\\n")
+            self.parts.append("\n")
         if tag == "div":
             self.div_depth -= 1
             if self.div_depth <= 0:
@@ -79,8 +79,8 @@ def main():
     parser = BookText()
     parser.feed(html)
     raw = "".join(parser.parts)
-    lines = [re.sub(r"\\s+", " ", line).strip() for line in raw.splitlines()]
-    text = "\\n\\n".join(line for line in lines if line)
+    lines = [re.sub(r"\s+", " ", line).strip() for line in raw.splitlines()]
+    text = "\n\n".join(line for line in lines if line)
     minimum = 15000 if "التوحيد" in TITLE else 2500
     if len(text) < minimum:
         raise RuntimeError("Fetched text appears incomplete; refusing to publish partial book")
@@ -88,7 +88,7 @@ def main():
         raise RuntimeError("Fetched Kitab al-Tawhid is missing a required chapter")
     source_url = "https://ar.wikisource.org/wiki/" + urllib.parse.quote(TITLE.replace(" ", "_"))
     header = (
-        "# " + TITLE + "\\n\\n"
+        "# " + TITLE + "\n\n"
         "المؤلف: محمد بن عبد الوهاب رحمه الله.\\n"
         "مصدر التفريغ: ويكي مصدر؛ والنص منسوب للمؤلف في فهرس المؤلفات.\\n"
         "تنبيه: هذه طبعة نصية رقمية تحتاج مقابلة على النسخة المصورة قبل اعتمادها للتحقيق العلمي.\\n"
@@ -97,7 +97,7 @@ def main():
     slug = "kitab-al-tawhid" if "التوحيد" in TITLE else "kashf-al-shubuhat"
     output = Path("texts/" + slug + ".md")
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(header + text + "\\n", encoding="utf-8")
+    output.write_text(header + text + "\n", encoding="utf-8")
     print(f"Fetched {len(text)} characters into {output}")
 
 if __name__ == "__main__":
