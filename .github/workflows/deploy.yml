@@ -37,6 +37,8 @@ jobs:
         run: python3 scripts/fetch_wikisource.py "كتاب أصول الإيمان"
       - name: Fetch public-domain Masail al-Jahiliyyah transcription
         run: python3 scripts/fetch_wikisource.py "مسائل الجاهلية"
+      - name: Fetch public-domain Mufid al-Mustafid transcription
+        run: python3 scripts/fetch_wikisource.py "مفيد المستفيد في كفر تارك التوحيد"
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:
