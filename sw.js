@@ -3,6 +3,7 @@ const APP_FILES = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./icon.svg",
   "./texts/usul-thalatha.md",
   "./texts/al-qawaid-al-arba.md",
   "./texts/nawaqid-al-islam.md"
