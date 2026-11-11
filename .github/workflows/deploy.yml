@@ -39,6 +39,10 @@ jobs:
         run: python3 scripts/fetch_wikisource.py "مسائل الجاهلية"
       - name: Fetch public-domain Mufid al-Mustafid transcription
         run: python3 scripts/fetch_wikisource.py "مفيد المستفيد في كفر تارك التوحيد"
+      - name: Fetch public-domain Adab al-Mashy ila al-Salah transcription
+        run: python3 scripts/fetch_wikisource.py "آداب المشي إلى الصلاة"
+      - name: Fetch public-domain Four Legal Principles transcription
+        run: python3 scripts/fetch_wikisource.py "أربع قواعد تدور الأحكام عليها"
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:
