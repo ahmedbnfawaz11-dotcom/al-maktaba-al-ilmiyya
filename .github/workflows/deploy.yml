@@ -84,11 +84,11 @@ jobs:
       - name: Fetch complete fadael-al-quran text from Shamela
         run: python3 scripts/fetch_shamela.py 11328 "fadael-al-quran" "فضائل القرآن" 1000
       - name: Fetch complete Mukhtasar Zad al-Maad text from Shamela
-        continue-on-error: true
         run: python3 scripts/fetch_shamela.py 5921 "mukhtasar-zad-al-maad" "مختصر زاد المعاد" 12000
       - name: Fetch complete Mukhtasar al-Insaf and al-Sharh al-Kabir text from Shamela
-        continue-on-error: true
         run: python3 scripts/fetch_shamela.py 1685 "mukhtasar-al-insaf" "مختصر الإنصاف والشرح الكبير" 30000
+      - name: Validate every catalog text and offline cache entry
+        run: python3 scripts/validate_site.py
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:
