@@ -3,6 +3,8 @@
 import json
 import re
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
@@ -71,8 +73,17 @@ def main():
     request = urllib.request.Request(API, headers={
         "User-Agent": "AlMaktabaAlIlmiyya/1.0 (educational text import)"
     })
-    with urllib.request.urlopen(request, timeout=45) as response:
-        payload = json.loads(response.read().decode("utf-8"))
+    payload = None
+    for attempt in range(6):
+        try:
+            with urllib.request.urlopen(request, timeout=45) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            break
+        except urllib.error.HTTPError as error:
+            if error.code != 429 or attempt == 5:
+                raise
+            time.sleep(2 ** (attempt + 1))
+    time.sleep(1)
     html = payload.get("parse", {}).get("text", "")
     if not html:
         raise RuntimeError("Wikisource API returned no parsed text")
@@ -102,6 +113,7 @@ def main():
         "mabahith-al-ijtihad" if TITLE == "مبحث الاجتهاد والخلاف" else
         "mukhtasar-sirat-al-rasul" if TITLE == "مختصر سيرة الرسول صلى الله عليه وسلم" else
         "aqidat-al-firqa-al-najiya" if TITLE == "عقيدة الفرقة الناجية أهل السنة والجماعة" else
+        "kitab-al-kabair" if TITLE == "كتاب الكبائر لمحمد بن عبد الوهاب" else
         "kitab-al-tawhid" if TITLE == "كتاب التوحيد الذي هو حق الله على العبيد" else
         "kashf-al-shubuhat" if TITLE == "كشف الشبهات" else
         "fadl-al-islam" if TITLE == "فضل الإسلام" else
