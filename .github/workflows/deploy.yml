@@ -86,7 +86,7 @@ jobs:
       - name: Fetch complete Mukhtasar Zad al-Maad text from Shamela
         run: python3 scripts/fetch_shamela.py 31457 "mukhtasar-zad-al-maad" "مختصر زاد المعاد" 12000
       - name: Fetch complete Mukhtasar al-Insaf and al-Sharh al-Kabir text from Shamela
-        run: python3 scripts/fetch_shamela.py 31246 "mukhtasar-al-insaf" "مختصر الإنصاف والشرح الكبير" 30000
+        run: python3 scripts/fetch_shamela.py 1685 "mukhtasar-al-insaf" "مختصر الإنصاف والشرح الكبير" 30000
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:
