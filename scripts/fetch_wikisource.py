@@ -81,10 +81,10 @@ def main():
     raw = "".join(parser.parts)
     lines = [re.sub(r"\s+", " ", line).strip() for line in raw.splitlines()]
     text = "\n\n".join(line for line in lines if line)
-    minimum = 15000 if "التوحيد" in TITLE else 2500
+    minimum = 15000 if TITLE == "كتاب التوحيد الذي هو حق الله على العبيد" else 2500
     if len(text) < minimum:
         raise RuntimeError("Fetched text appears incomplete; refusing to publish partial book")
-    if "التوحيد" in TITLE and "باب فضل التوحيد" not in text:
+    if TITLE == "كتاب التوحيد الذي هو حق الله على العبيد" and "باب فضل التوحيد" not in text:
         raise RuntimeError("Fetched Kitab al-Tawhid is missing a required chapter")
     source_url = "https://ar.wikisource.org/wiki/" + urllib.parse.quote(TITLE.replace(" ", "_"))
     header = (
