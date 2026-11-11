@@ -1,0 +1,12 @@
+{
+  "name": "المكتبة العلمية للإمام محمد بن عبد الوهاب",
+  "short_name": "المكتبة العلمية",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f4eb",
+  "theme_color": "#0d5b46",
+  "description": "مكتبة علمية للعناية بمؤلفات الإمام محمد بن عبد الوهاب رحمه الله"
+}
