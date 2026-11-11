@@ -92,7 +92,7 @@ def main():
         "المؤلف: محمد بن عبد الوهاب رحمه الله.\n"
         "مصدر التفريغ: ويكي مصدر؛ والنص منسوب للمؤلف في فهرس المؤلفات.\n"
         "تنبيه: هذه طبعة نصية رقمية تحتاج مقابلة على النسخة المصورة قبل اعتمادها للتحقيق العلمي.\n"
-        "المصدر: " + source_url + "\\n\\n---\\n\\n"
+        "المصدر: " + source_url + "\n\n---\n\n"
     )
     slug = (
         "mufid-al-mustafid" if "مفيد المستفيد" in TITLE else
@@ -109,7 +109,9 @@ def main():
         "masail-al-jahiliyyah" if TITLE == "مسائل الجاهلية" else
         None
     )
-    if not slug:\n        raise RuntimeError("No unique output slug configured for this title")\n    output = Path("texts/" + slug + ".md")
+    if not slug:
+        raise RuntimeError("No unique output slug configured for this title")
+    output = Path("texts/" + slug + ".md")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(header + text + "\n", encoding="utf-8")
     print(f"Fetched {len(text)} characters into {output}")
