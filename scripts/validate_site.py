@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Fail the Pages build if any catalog text is missing or not cached offline."""
 import re
-import sys
 from pathlib import Path
 
 index = Path("index.html").read_text(encoding="utf-8")
@@ -16,6 +15,16 @@ mapping = dict(re.findall(r'(\w+):"texts/([^"]+)"', match.group(1)))
 missing_ids = sorted(set(catalog_ids) - set(mapping))
 if missing_ids:
     raise SystemExit("VALIDATION ERROR: catalog entries without text files: " + ", ".join(missing_ids))
+
+category_select = re.search(r'<select id="category">([\\s\\S]*?)</select>', index)
+if not category_select:
+    raise SystemExit("VALIDATION ERROR: category filter is missing")
+categories = set(re.findall(r'cat:"([^"]+)"', index))
+options = set(re.findall(r'<option>(.*?)</option>', category_select.group(1)))
+missing_categories = sorted(categories - options)
+if missing_categories:
+    raise SystemExit("VALIDATION ERROR: categories absent from filter: " +
+                     ", ".join(missing_categories))
 
 offline_files = set(re.findall(r'["\']\./(texts/[^"\']+)["\']', service_worker))
 missing_offline = sorted("texts/" + name for name in mapping.values()
