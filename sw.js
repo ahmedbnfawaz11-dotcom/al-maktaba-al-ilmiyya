@@ -6,7 +6,12 @@ const APP_FILES = [
   "./icon.svg",
   "./texts/usul-thalatha.md",
   "./texts/al-qawaid-al-arba.md",
-  "./texts/nawaqid-al-islam.md"
+  "./texts/nawaqid-al-islam.md",
+  "./texts/kitab-al-tawhid-guide.md",
+  "./texts/masail-al-jahiliyyah-guide.md",
+  "./texts/adab-al-mashy-guide.md",
+  "./texts/usul-al-iman-guide.md",
+  "./texts/mukhtasar-sirat-guide.md"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
