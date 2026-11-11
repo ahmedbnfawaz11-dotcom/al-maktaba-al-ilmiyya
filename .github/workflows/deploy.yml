@@ -53,6 +53,26 @@ jobs:
         run: python3 scripts/fetch_wikisource.py "عقيدة الفرقة الناجية أهل السنة والجماعة"
       - name: Fetch public-domain Book of Major Sins transcription
         run: python3 scripts/fetch_wikisource.py "كتاب الكبائر لمحمد بن عبد الوهاب"
+      - name: Set up Shamela page importer
+        run: python3 -m py_compile scripts/fetch_shamela.py
+      - name: Fetch complete shurut-al-salah text from Shamela
+        run: python3 scripts/fetch_shamela.py 11266 "shurut-al-salah" "شروط الصلاة وأركانها وواجباتها" 1000
+      - name: Fetch complete kitab-al-taharah-shamela text from Shamela
+        run: python3 scripts/fetch_shamela.py 8383 "kitab-al-taharah-shamela" "كتاب الطهارة" 2000
+      - name: Fetch complete ahkam-tamanni-al-mawt text from Shamela
+        run: python3 scripts/fetch_shamela.py 7489 "ahkam-tamanni-al-mawt" "أحكام تمني الموت" 1500
+      - name: Fetch complete fatawa-wa-masail text from Shamela
+        run: python3 scripts/fetch_shamela.py 11324 "fatawa-wa-masail" "فتاوى ومسائل" 5000
+      - name: Fetch complete khutab-minbariyya text from Shamela
+        run: python3 scripts/fetch_shamela.py 7612 "khutab-minbariyya" "الخطب المنبرية" 2500
+      - name: Fetch complete fawaid-hudaybiyya text from Shamela
+        run: python3 scripts/fetch_shamela.py 11070 "fawaid-hudaybiyya" "بعض فوائد صلح الحديبية" 800
+      - name: Fetch complete tafsir-ayat-min-al-quran text from Shamela
+        run: python3 scripts/fetch_shamela.py 11099 "tafsir-ayat-min-al-quran" "تفسير آيات من القرآن الكريم" 10000
+      - name: Fetch complete mukhtasar-tafsir-al-anfal text from Shamela
+        run: python3 scripts/fetch_shamela.py 11383 "mukhtasar-tafsir-al-anfal" "مختصر تفسير سورة الأنفال" 1000
+      - name: Fetch complete fadael-al-quran text from Shamela
+        run: python3 scripts/fetch_shamela.py 11328 "fadael-al-quran" "فضائل القرآن" 1000
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:
