@@ -31,6 +31,10 @@ jobs:
         run: python3 scripts/fetch_wikisource.py "كتاب التوحيد الذي هو حق الله على العبيد"
       - name: Fetch public-domain Kashf al-Shubuhat transcription
         run: python3 scripts/fetch_wikisource.py "كشف الشبهات"
+      - name: Fetch public-domain Fadl al-Islam transcription
+        run: python3 scripts/fetch_wikisource.py "فضل الإسلام"
+      - name: Fetch public-domain Usul al-Iman transcription
+        run: python3 scripts/fetch_wikisource.py "كتاب أصول الإيمان"
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:
