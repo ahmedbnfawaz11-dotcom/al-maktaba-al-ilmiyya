@@ -18,6 +18,8 @@ const APP_FILES = [
   "./texts/kitab-al-kabair.md",
   "./texts/shurut-al-salah.md",
   "./texts/kitab-al-taharah-shamela.md",
+  "./texts/majmuat-rasail-tawhid-iman.md",
+  "./texts/al-rasail-al-shakhsiyya.md",
   "./texts/ahkam-tamanni-al-mawt.md",
   "./texts/fatawa-wa-masail.md",
   "./texts/khutab-minbariyya.md",
