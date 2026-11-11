@@ -28,11 +28,13 @@ jobs:
         with:
           enablement: false
       - name: Fetch public-domain Kitab al-Tawhid transcription
-        run: python3 scripts/fetch_wikisource.py
+        run: python3 scripts/fetch_wikisource.py "كتاب التوحيد الذي هو حق الله على العبيد"
+      - name: Fetch public-domain Kashf al-Shubuhat transcription
+        run: python3 scripts/fetch_wikisource.py "كشف الشبهات"
       - name: Upload site
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: .
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
