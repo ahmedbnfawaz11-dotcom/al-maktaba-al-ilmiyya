@@ -29,6 +29,7 @@ const APP_FILES = [
   "./texts/usul-thalatha.md",
   "./texts/al-qawaid-al-arba.md",
   "./texts/nawaqid-al-islam.md",
+  "./texts/al-usul-al-sittah.md",
   "./texts/kitab-al-tawhid-guide.md",
   "./texts/masail-al-jahiliyyah-guide.md",
   "./texts/adab-al-mashy-guide.md",
