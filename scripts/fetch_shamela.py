@@ -4,6 +4,7 @@ import html
 import re
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import urllib.error
 import urllib.request
 from html.parser import HTMLParser
@@ -130,18 +131,27 @@ def main():
     total = page_count(first_parser, first_raw, book_id)
     if total < 1 or total > 3000:
         raise RuntimeError(f"Unreasonable page count for {title}: {total}")
-    chunks = []
+    chunks = [None] * total
     total_chars = 0
-    for page in range(1, total + 1):
+
+    def fetch_page(page):
         raw = first_raw if page == 1 else request(f"{base}/{page}")
         page_text, _ = clean_text(raw)
         if len(page_text) < 20:
             raise RuntimeError(f"Missing/short page {page}/{total} for {title}")
-        chunks.append(f"## صفحة الشاملة {page}\n\n{page_text}")
-        total_chars += len(page_text)
-        print(f"{title}: page {page}/{total}, {len(page_text)} chars")
-        if page < total:
-            time.sleep(0.8)
+        return page, page_text
+
+    # A bounded pool reduces serial round trips while preserving page order.
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures = [pool.submit(fetch_page, page) for page in range(2, total + 1)]
+        first_page_text, _ = clean_text(first_raw)
+        chunks[0] = f"## صفحة الشاملة 1\n\n{first_page_text}"
+        total_chars += len(first_page_text)
+        for future in as_completed(futures):
+            page, page_text = future.result()
+            chunks[page - 1] = f"## صفحة الشاملة {page}\n\n{page_text}"
+            total_chars += len(page_text)
+            print(f"{title}: page {page}/{total}, {len(page_text)} chars", flush=True)
     if total_chars < min_chars:
         raise RuntimeError(f"Text too short for {title}: {total_chars} < {min_chars}")
     header = (
