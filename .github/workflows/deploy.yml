@@ -43,6 +43,14 @@ jobs:
         run: python3 scripts/fetch_wikisource.py "آداب المشي إلى الصلاة"
       - name: Fetch public-domain Four Legal Principles transcription
         run: python3 scripts/fetch_wikisource.py "أربع قواعد تدور الأحكام عليها"
+      - name: Fetch public-domain Reply to the Rafidah transcription
+        run: python3 scripts/fetch_wikisource.py "رسالة الرد على الرافضة"
+      - name: Fetch public-domain Ijtihad and disagreement abridgment
+        run: python3 scripts/fetch_wikisource.py "مبحث الاجتهاد والخلاف"
+      - name: Fetch public-domain Abridged Prophetic Biography transcription
+        run: python3 scripts/fetch_wikisource.py "مختصر سيرة الرسول صلى الله عليه وسلم"
+      - name: Fetch public-domain Creed of the Saved Sect transcription
+        run: python3 scripts/fetch_wikisource.py "عقيدة الفرقة الناجية أهل السنة والجماعة"
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:

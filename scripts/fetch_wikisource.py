@@ -98,13 +98,18 @@ def main():
         "mufid-al-mustafid" if "مفيد المستفيد" in TITLE else
         "adab-al-mashy" if TITLE == "آداب المشي إلى الصلاة" else
         "arba-qawaid" if TITLE == "أربع قواعد تدور الأحكام عليها" else
+        "radd-al-rawafid" if TITLE == "رسالة الرد على الرافضة" else
+        "mabahith-al-ijtihad" if TITLE == "مبحث الاجتهاد والخلاف" else
+        "mukhtasar-sirat-al-rasul" if TITLE == "مختصر سيرة الرسول صلى الله عليه وسلم" else
+        "aqidat-al-firqa-al-najiya" if TITLE == "عقيدة الفرقة الناجية أهل السنة والجماعة" else
         "kitab-al-tawhid" if TITLE == "كتاب التوحيد الذي هو حق الله على العبيد" else
         "kashf-al-shubuhat" if TITLE == "كشف الشبهات" else
         "fadl-al-islam" if TITLE == "فضل الإسلام" else
-        "usul-al-iman" if "الإيمان" in TITLE else
-        "masail-al-jahiliyyah"
+        "usul-al-iman" if TITLE == "كتاب أصول الإيمان" else
+        "masail-al-jahiliyyah" if TITLE == "مسائل الجاهلية" else
+        None
     )
-    output = Path("texts/" + slug + ".md")
+    if not slug:\n        raise RuntimeError("No unique output slug configured for this title")\n    output = Path("texts/" + slug + ".md")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(header + text + "\n", encoding="utf-8")
     print(f"Fetched {len(text)} characters into {output}")
