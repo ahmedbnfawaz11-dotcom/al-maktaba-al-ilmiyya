@@ -1,4 +1,4 @@
-const CACHE_NAME = "ilm-library-v6";
+const CACHE_NAME = "ilm-library-v7";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -8,6 +8,7 @@ const APP_FILES = [
   "./texts/kashf-al-shubuhat.md",
   "./texts/usul-al-iman.md",
   "./texts/masail-al-jahiliyyah.md",
+  "./texts/mufid-al-mustafid.md",
   "./texts/fadl-al-islam.md",
   "./texts/usul-thalatha.md",
   "./texts/al-qawaid-al-arba.md",
