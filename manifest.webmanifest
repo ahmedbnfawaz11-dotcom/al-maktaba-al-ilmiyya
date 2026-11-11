@@ -8,5 +8,13 @@
   "display": "standalone",
   "background_color": "#f7f4eb",
   "theme_color": "#0d5b46",
-  "description": "مكتبة علمية للعناية بمؤلفات الإمام محمد بن عبد الوهاب رحمه الله"
+  "description": "مكتبة علمية للعناية بمؤلفات الإمام محمد بن عبد الوهاب رحمه الله",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
