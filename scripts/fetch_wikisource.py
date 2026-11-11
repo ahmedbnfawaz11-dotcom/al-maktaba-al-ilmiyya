@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
-"""Fetch the public-domain Wikisource transcription of Kitab al-Tawhid for the Pages build."""
+"""Fetch a public-domain work by Muhammad ibn Abd al-Wahhab from Wikisource."""
 import json
 import re
+import sys
 import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
 from pathlib import Path
 
-TITLE = "كتاب التوحيد الذي هو حق الله على العبيد"
+TITLE = sys.argv[1] if len(sys.argv) > 1 else "كتاب التوحيد الذي هو حق الله على العبيد"
+
 API = "https://ar.wikisource.org/w/api.php?" + urllib.parse.urlencode({
-    "action": "parse",
-    "page": TITLE,
-    "prop": "text",
-    "format": "json",
-    "formatversion": "2",
+    "action": "parse", "page": TITLE, "prop": "text",
+    "format": "json", "formatversion": "2",
 })
 
 class BookText(HTMLParser):
@@ -47,7 +46,7 @@ class BookText(HTMLParser):
         if tag == "div":
             self.div_depth += 1
         if tag in self.BLOCKS:
-            self.parts.append("\n")
+            self.parts.append("\\n")
 
     def handle_endtag(self, tag):
         if self.skip_tags:
@@ -58,7 +57,7 @@ class BookText(HTMLParser):
         if not self.active:
             return
         if tag in self.BLOCKS:
-            self.parts.append("\n")
+            self.parts.append("\\n")
         if tag == "div":
             self.div_depth -= 1
             if self.div_depth <= 0:
@@ -76,26 +75,29 @@ def main():
         payload = json.loads(response.read().decode("utf-8"))
     html = payload.get("parse", {}).get("text", "")
     if not html:
-        raise RuntimeError("Wikisource API returned no parsed book text")
+        raise RuntimeError("Wikisource API returned no parsed text")
     parser = BookText()
     parser.feed(html)
     raw = "".join(parser.parts)
-    lines = [re.sub(r"\s+", " ", line).strip() for line in raw.splitlines()]
-    lines = [line for line in lines if line]
-    text = "\n\n".join(lines)
-    if len(text) < 15000 or "باب فضل التوحيد" not in text:
-        raise RuntimeError("Fetched text appears incomplete; refusing to publish a partial book")
+    lines = [re.sub(r"\\s+", " ", line).strip() for line in raw.splitlines()]
+    text = "\\n\\n".join(line for line in lines if line)
+    minimum = 15000 if "التوحيد" in TITLE else 2500
+    if len(text) < minimum:
+        raise RuntimeError("Fetched text appears incomplete; refusing to publish partial book")
+    if "التوحيد" in TITLE and "باب فضل التوحيد" not in text:
+        raise RuntimeError("Fetched Kitab al-Tawhid is missing a required chapter")
+    source_url = "https://ar.wikisource.org/wiki/" + urllib.parse.quote(TITLE.replace(" ", "_"))
     header = (
-        "# كتاب التوحيد الذي هو حق الله على العبيد\n\n"
-        "المؤلف: محمد بن عبد الوهاب رحمه الله.\n"
-        "مصدر التفريغ: ويكي مصدر، والصفحة تصنف النص ضمن الملكية العامة.\n"
-        "تنبيه: هذه طبعة نصية رقمية، وتحتاج مقابلة نهائية على النسخة المصورة قبل اعتمادها للتحقيق العلمي.\n"
-        "المصدر: https://ar.wikisource.org/wiki/كتاب_التوحيد_الذي_هو_حق_الله_على_العبيد\n\n"
-        "---\n\n"
+        "# " + TITLE + "\\n\\n"
+        "المؤلف: محمد بن عبد الوهاب رحمه الله.\\n"
+        "مصدر التفريغ: ويكي مصدر؛ والنص منسوب للمؤلف في فهرس المؤلفات.\\n"
+        "تنبيه: هذه طبعة نصية رقمية تحتاج مقابلة على النسخة المصورة قبل اعتمادها للتحقيق العلمي.\\n"
+        "المصدر: " + source_url + "\\n\\n---\\n\\n"
     )
-    output = Path("texts/kitab-al-tawhid.md")
+    slug = "kitab-al-tawhid" if "التوحيد" in TITLE else "kashf-al-shubuhat"
+    output = Path("texts/" + slug + ".md")
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(header + text + "\n", encoding="utf-8")
+    output.write_text(header + text + "\\n", encoding="utf-8")
     print(f"Fetched {len(text)} characters into {output}")
 
 if __name__ == "__main__":
