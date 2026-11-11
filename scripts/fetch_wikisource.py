@@ -22,41 +22,50 @@ class BookText(HTMLParser):
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.in_content = 0
-        self.skip_depth = 0
+        self.active = False
+        self.div_depth = 0
         self.skip_tags = []
         self.parts = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = set((attrs.get("class") or "").split())
-        if tag == "div" and "mw-parser-output" in classes:
-            self.in_content += 1
-        if not self.in_content:
+        if not self.active:
+            if tag == "div" and "mw-parser-output" in classes:
+                self.active = True
+                self.div_depth = 1
+            return
+        if self.skip_tags:
+            self.skip_tags.append(tag)
             return
         if tag in self.SKIP or classes.intersection({
             "mw-editsection", "reference", "mw-references-wrap", "navbox",
             "catlinks", "printfooter", "toc", "noprint", "mw-indicators"
         }):
-            self.skip_depth += 1
             self.skip_tags.append(tag)
             return
-        if self.skip_depth == 0 and tag in self.BLOCKS:
+        if tag == "div":
+            self.div_depth += 1
+        if tag in self.BLOCKS:
             self.parts.append("\n")
 
     def handle_endtag(self, tag):
-        if self.skip_depth:
-            if self.skip_tags and self.skip_tags[-1] == tag:
-                self.skip_tags.pop()
-                self.skip_depth -= 1
+        if self.skip_tags:
+            if tag in self.skip_tags:
+                index = len(self.skip_tags) - 1 - self.skip_tags[::-1].index(tag)
+                self.skip_tags = self.skip_tags[:index]
             return
-        if self.in_content and tag in self.BLOCKS:
+        if not self.active:
+            return
+        if tag in self.BLOCKS:
             self.parts.append("\n")
-        if tag == "div" and self.in_content:
-            self.in_content -= 1
+        if tag == "div":
+            self.div_depth -= 1
+            if self.div_depth <= 0:
+                self.active = False
 
     def handle_data(self, data):
-        if self.in_content and not self.skip_depth:
+        if self.active and not self.skip_tags:
             self.parts.append(data)
 
 def main():
@@ -71,7 +80,7 @@ def main():
     parser = BookText()
     parser.feed(html)
     raw = "".join(parser.parts)
-    lines = [re.sub(r"\\s+", " ", line).strip() for line in raw.splitlines()]
+    lines = [re.sub(r"\s+", " ", line).strip() for line in raw.splitlines()]
     lines = [line for line in lines if line]
     text = "\n\n".join(lines)
     if len(text) < 15000 or "باب فضل التوحيد" not in text:
