@@ -98,7 +98,8 @@ def main():
         "kitab-al-tawhid" if "التوحيد" in TITLE else
         "kashf-al-shubuhat" if "كشف الشبهات" in TITLE else
         "fadl-al-islam" if "فضل الإسلام" in TITLE else
-        "usul-al-iman"
+        "usul-al-iman" if "الإيمان" in TITLE else
+        "masail-al-jahiliyyah"
     )
     output = Path("texts/" + slug + ".md")
     output.parent.mkdir(parents=True, exist_ok=True)
