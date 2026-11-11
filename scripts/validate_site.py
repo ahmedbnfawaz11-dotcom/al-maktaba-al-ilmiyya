@@ -16,7 +16,7 @@ missing_ids = sorted(set(catalog_ids) - set(mapping))
 if missing_ids:
     raise SystemExit("VALIDATION ERROR: catalog entries without text files: " + ", ".join(missing_ids))
 
-category_select = re.search(r'<select id="category">([\\s\\S]*?)</select>', index)
+category_select = re.search(r'<select id="category">([\s\S]*?)</select>', index)
 if not category_select:
     raise SystemExit("VALIDATION ERROR: category filter is missing")
 categories = set(re.findall(r'cat:"([^"]+)"', index))
