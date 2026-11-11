@@ -7,14 +7,25 @@ index = Path("index.html").read_text(encoding="utf-8")
 service_worker = Path("sw.js").read_text(encoding="utf-8")
 
 catalog_ids = re.findall(r'\{id:"([^"]+)",title:', index)
+if not catalog_ids:
+    raise SystemExit("VALIDATION ERROR: no catalog entries were found")
+if len(catalog_ids) != len(set(catalog_ids)):
+    raise SystemExit("VALIDATION ERROR: duplicate catalog IDs were found")
 match = re.search(r'const textPath=\(\{([\s\S]*?)\}\)\[id\]', index)
 if not match:
     raise SystemExit("VALIDATION ERROR: could not find the catalog text-path map")
 
-mapping = dict(re.findall(r'(\w+):"texts/([^"]+)"', match.group(1)))
+map_pairs = re.findall(r'(\w+):"texts/([^"]+)"', match.group(1))
+map_ids = [book_id for book_id, _ in map_pairs]
+if len(map_ids) != len(set(map_ids)):
+    raise SystemExit("VALIDATION ERROR: duplicate IDs in text-path map")
+mapping = dict(map_pairs)
 missing_ids = sorted(set(catalog_ids) - set(mapping))
 if missing_ids:
     raise SystemExit("VALIDATION ERROR: catalog entries without text files: " + ", ".join(missing_ids))
+orphan_ids = sorted(set(mapping) - set(catalog_ids))
+if orphan_ids:
+    raise SystemExit("VALIDATION ERROR: text-path entries without catalog books: " + ", ".join(orphan_ids))
 
 category_select = re.search(r'<select id="category">([\s\S]*?)</select>', index)
 if not category_select:
