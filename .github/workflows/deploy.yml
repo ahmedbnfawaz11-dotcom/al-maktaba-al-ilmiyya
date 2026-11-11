@@ -59,6 +59,10 @@ jobs:
         run: python3 scripts/fetch_shamela.py 11266 "shurut-al-salah" "شروط الصلاة وأركانها وواجباتها" 1000
       - name: Fetch complete kitab-al-taharah-shamela text from Shamela
         run: python3 scripts/fetch_shamela.py 8383 "kitab-al-taharah-shamela" "كتاب الطهارة" 2000
+      - name: Fetch complete Majmuat Rasa'il al-Tawhid wa al-Iman text from Shamela
+        run: python3 scripts/fetch_shamela.py 11381 "majmuat-rasail-tawhid-iman" "مجموعة رسائل في التوحيد والإيمان" 12000
+      - name: Fetch complete Personal Letters text from Shamela
+        run: python3 scripts/fetch_shamela.py 1124 "al-rasail-al-shakhsiyya" "الرسائل الشخصية" 12000
       - name: Fetch complete ahkam-tamanni-al-mawt text from Shamela
         run: python3 scripts/fetch_shamela.py 7489 "ahkam-tamanni-al-mawt" "أحكام تمني الموت" 1500
       - name: Fetch complete fatawa-wa-masail text from Shamela
