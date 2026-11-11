@@ -1,5 +1,12 @@
-const CACHE_NAME = "ilm-library-v1";
-const APP_FILES = ["./", "./index.html", "./manifest.webmanifest"];
+const CACHE_NAME = "ilm-library-v2";
+const APP_FILES = [
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./texts/usul-thalatha.md",
+  "./texts/al-qawaid-al-arba.md",
+  "./texts/nawaqid-al-islam.md"
+];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
   self.skipWaiting();
@@ -11,8 +18,10 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
   event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
-    const copy = response.clone();
-    caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+    if (response && response.ok) {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+    }
     return response;
   }).catch(() => caches.match("./index.html"))));
 });
