@@ -4,6 +4,7 @@ const APP_FILES = [
   "./index.html",
   "./manifest.webmanifest",
   "./icon.svg",
+  "./texts/kitab-al-tawhid.md",
   "./texts/usul-thalatha.md",
   "./texts/al-qawaid-al-arba.md",
   "./texts/nawaqid-al-islam.md",
