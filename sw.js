@@ -1,4 +1,4 @@
-const CACHE_NAME = "ilm-library-v13";
+const CACHE_NAME = "ilm-library-v14";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -39,7 +39,7 @@ const APP_FILES = [
   "./texts/mukhtasar-sirat-guide.md"
 ];
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => Promise.allSettled(APP_FILES.map(file => cache.add(file)))));
   self.skipWaiting();
 });
 self.addEventListener("activate", event => {
