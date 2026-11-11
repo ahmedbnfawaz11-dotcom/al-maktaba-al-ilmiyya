@@ -1,4 +1,4 @@
-const CACHE_NAME = "ilm-library-v16";
+const CACHE_NAME = "ilm-library-v17";
 const APP_FILES = [
   "./",
   "./index.html",
