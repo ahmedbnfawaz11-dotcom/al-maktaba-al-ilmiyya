@@ -95,11 +95,11 @@ def main():
         "المصدر: " + source_url + "\\n\\n---\\n\\n"
     )
     slug = (
-        "kitab-al-tawhid" if "التوحيد" in TITLE else
-        "kashf-al-shubuhat" if "كشف الشبهات" in TITLE else
-        "fadl-al-islam" if "فضل الإسلام" in TITLE else
-        "usul-al-iman" if "الإيمان" in TITLE else
         "mufid-al-mustafid" if "مفيد المستفيد" in TITLE else
+        "kitab-al-tawhid" if TITLE == "كتاب التوحيد الذي هو حق الله على العبيد" else
+        "kashf-al-shubuhat" if TITLE == "كشف الشبهات" else
+        "fadl-al-islam" if TITLE == "فضل الإسلام" else
+        "usul-al-iman" if "الإيمان" in TITLE else
         "masail-al-jahiliyyah"
     )
     output = Path("texts/" + slug + ".md")
