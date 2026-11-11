@@ -1,4 +1,4 @@
-const CACHE_NAME = "ilm-library-v15";
+const CACHE_NAME = "ilm-library-v16";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -19,6 +19,9 @@ const APP_FILES = [
   "./texts/shurut-al-salah.md",
   "./texts/kitab-al-taharah-shamela.md",
   "./texts/majmuat-rasail-tawhid-iman.md",
+  "./texts/mukhtasar-sirat-al-nabawiyya-shamela.md",
+  "./texts/majmuat-al-hadith-fiqh.md",
+  "./texts/al-masail-min-kalam-ibn-taymiyya.md",
   "./texts/al-rasail-al-shakhsiyya.md",
   "./texts/ahkam-tamanni-al-mawt.md",
   "./texts/fatawa-wa-masail.md",
