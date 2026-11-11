@@ -94,7 +94,12 @@ def main():
         "تنبيه: هذه طبعة نصية رقمية تحتاج مقابلة على النسخة المصورة قبل اعتمادها للتحقيق العلمي.\\n"
         "المصدر: " + source_url + "\\n\\n---\\n\\n"
     )
-    slug = "kitab-al-tawhid" if "التوحيد" in TITLE else "kashf-al-shubuhat"
+    slug = (
+        "kitab-al-tawhid" if "التوحيد" in TITLE else
+        "kashf-al-shubuhat" if "كشف الشبهات" in TITLE else
+        "fadl-al-islam" if "فضل الإسلام" in TITLE else
+        "usul-al-iman"
+    )
     output = Path("texts/" + slug + ".md")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(header + text + "\n", encoding="utf-8")
